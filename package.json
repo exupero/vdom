@@ -1,0 +1,9 @@
+{
+  "name": "",
+  "version": "",
+  "description": "",
+  "devDependencies": {
+    "browserify": "^9.0.3",
+    "virtual-dom": "^2.0.1"
+  }
+}
