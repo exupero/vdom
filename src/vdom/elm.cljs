@@ -15,7 +15,8 @@
 
 (defn event [ch x]
   (fn [e]
-    (.preventDefault e)
+    (if (.-preventDefault e)
+      (.preventDefault e))
     (put! ch x)))
 
 (defn render! [views elem]
