@@ -13,13 +13,13 @@
     (remove nil?)))
 
 (defn html-node [tag attrs children]
-  (new js/VDOM.VHtml (name tag) (clj->js attrs) (clj->js children)))
+  (js/VDOM.VHtml. (name tag) (clj->js attrs) (clj->js children)))
 
 (defn svg-node [tag attrs children]
-  (new js/VDOM.VSvg (name tag) (clj->js attrs) (clj->js children)))
+  (js/VDOM.VSvg. (name tag) (clj->js attrs) (clj->js children)))
 
 (defn text-node [s]
-  (new js/VDOM.VText s))
+  (js/VDOM.VText. s))
 
 (declare svg-tree)
 

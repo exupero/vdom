@@ -8,9 +8,9 @@
     (put! out init)
     (go-loop [m init
               v (<! in)]
-      (let [m2 (f m v)]
-        (put! out m2)
-        (recur m2 (<! in))))
+      (let [m' (f m v)]
+        (put! out m')
+        (recur m' (<! in))))
     out))
 
 (defn event [ch x]
