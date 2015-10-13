@@ -3,6 +3,6 @@
   :url "https://github.com/exupero/vdom"
   :license {:name "MIT License"
             :url "http://opensource.org/licenses/MIT"}
-  :dependencies [[org.clojure/clojure "1.6.0"]
-                 [org.clojure/clojurescript "0.0-3195" :exclusions [org.apache.ant/ant]]]
+  :dependencies [[org.clojure/clojure "1.7.0"]
+                 [org.clojure/clojurescript "1.7.122" :exclusions [org.apache.ant/ant]]]
   :source-paths ["src"])

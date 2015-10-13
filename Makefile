@@ -1,5 +1,5 @@
-vdom.min.js: vdom.js
-	node_modules/.bin/uglify -s vdom.js -o vdom.min.js
+vdom.min.js: src/vdom/vdom.js
+	node_modules/.bin/uglify -s vdom.js -o src/vdom/vdom.min.js
 
-vdom.js: vdom-main.js
-	node_modules/.bin/browserify vdom-main.js -o vdom.js
+src/vdom/vdom.js: src/vdom/vdom-main.js
+	node_modules/.bin/browserify src/vdom/vdom-main.js -o src/vdom/vdom.js

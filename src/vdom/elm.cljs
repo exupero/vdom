@@ -15,12 +15,15 @@
 
 (defn event [ch x]
   (fn [e]
-    (if (.-preventDefault e)
+    (when (.-preventDefault e)
       (.preventDefault e))
     (put! ch x)))
 
-(defn render! [views elem]
-  (let [render (renderer elem)]
-    (go-loop []
-      (render (<! views))
+(defn drain [ch f]
+  (go-loop []
+    (when-let [x (<! ch)]
+      (f x)
       (recur))))
+
+(defn render! [views elem]
+  (drain views (renderer elem)))
