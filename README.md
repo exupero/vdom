@@ -8,8 +8,8 @@ A Clojure library for constructing virtual DOMs using [virtual-dom](https://gith
 [vdom "0.1.0-SNAPSHOT"]
 ```
 
-Also, copy the `vdom.js` or `vdom.min.js` file into your project and include it in your HTML file.
+Then require `vdom.core` or, if you'd like a more reactive experience, `vdom.elm`.
 
 ## Building
 
-After installing Node modules (`npm install`), build the `vdom.js` file by running `make`.
+After installing Node modules with `npm install`, build the Javascript files by running `make`.
