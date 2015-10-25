@@ -67,9 +67,9 @@
 (defn renderer [elem]
   (let [tree (atom (text-node ""))
         root (atom (create @tree))
-        update (if (nil? (.-requestAnimationFrame js/window))
-                 (fn [f] (f))
-                 (fn [f] (.requestAnimationFrame js/window f)))]
+        update (if-let [frame js/window.requestAnimationFrame]
+                 (fn [f] (frame f))
+                 (fn [f] (f)))]
     (.appendChild elem @root)
     (fn [view]
       (let [new-tree (html-tree view)

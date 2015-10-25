@@ -13,12 +13,6 @@
         (recur m' (<! in))))
     out))
 
-(defn event [ch x]
-  (fn [e]
-    (when (.-preventDefault e)
-      (.preventDefault e))
-    (put! ch x)))
-
 (defn drain [ch f]
   (go-loop []
     (when-let [x (<! ch)]
