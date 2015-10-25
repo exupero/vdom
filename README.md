@@ -103,3 +103,11 @@ These two functions, along with `core.async/map`, provide the basis for a simple
       models (vdom.elm/foldp step 0 actions)]
   (vdom.elm/render! (core.async/map (fn [x] [:div {} x]) [models]) js/document.body))
 ```
+
+## Hooks
+
+To get the actual DOM element in your UI tree, include in a node's attributes a virtual-dom hook. Provide a value by calling `vdom.hooks/hook` with a function that takes a DOM node. For instance,
+
+```
+[:input {:hookFocus (vdom.hooks/hook (fn [node] (.focus node)))}]
+```
