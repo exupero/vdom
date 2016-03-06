@@ -2,8 +2,8 @@
 
 (deftype Hook [f]
   Object
-  (hook [_ x]
-    (f x)))
+  (hook [_ node prop prev]
+    (f node prop prev)))
 
 (defn hook [f]
   (Hook. f))

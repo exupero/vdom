@@ -29,6 +29,9 @@
     (nil? arg)
     (text-node "")
 
+    (js/VDOM.isVirtualNode arg)
+    arg
+
     (seq? arg)
     (html-node :div {} (map html-tree (flatten-children arg)))
 
@@ -49,6 +52,9 @@
   (cond
     (nil? arg)
     (text-node "")
+
+    (js/VDOM.isVirtualNode arg)
+    arg
 
     (string? arg)
     (text-node arg)

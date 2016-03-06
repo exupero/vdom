@@ -5,3 +5,4 @@ VDOM.create = function(){};
 VDOM.VHtml = {};
 VDOM.VText = {};
 VDOM.VSvg = {};
+VDOM.isVirtualNode = function(x) {};

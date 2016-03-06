@@ -4,5 +4,6 @@ return VDOM = {
   create: require("virtual-dom/create-element"),
   VHtml: require("virtual-dom/vnode/vnode"),
   VText: require("virtual-dom/vnode/vtext"),
-  VSvg: require("virtual-dom/virtual-hyperscript/svg")
+  VSvg: require("virtual-dom/virtual-hyperscript/svg"),
+  isVirtualNode: require("virtual-dom/vnode/is-vnode")
 }
