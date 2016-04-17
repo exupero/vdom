@@ -468,7 +468,6 @@ var applyProperties = require("./apply-properties")
 var isWidget = require("../vnode/is-widget.js")
 var VPatch = require("../vnode/vpatch.js")
 
-var render = require("./create-element")
 var updateWidget = require("./update-widget")
 
 module.exports = applyPatch
@@ -516,7 +515,7 @@ function removeNode(domNode, vNode) {
 }
 
 function insertNode(parentNode, vNode, renderOptions) {
-    var newNode = render(vNode, renderOptions)
+    var newNode = renderOptions.render(vNode, renderOptions)
 
     if (parentNode) {
         parentNode.appendChild(newNode)
@@ -533,7 +532,7 @@ function stringPatch(domNode, leftVNode, vText, renderOptions) {
         newNode = domNode
     } else {
         var parentNode = domNode.parentNode
-        newNode = render(vText, renderOptions)
+        newNode = renderOptions.render(vText, renderOptions)
 
         if (parentNode && newNode !== domNode) {
             parentNode.replaceChild(newNode, domNode)
@@ -550,7 +549,7 @@ function widgetPatch(domNode, leftVNode, widget, renderOptions) {
     if (updating) {
         newNode = widget.update(leftVNode, domNode) || domNode
     } else {
-        newNode = render(widget, renderOptions)
+        newNode = renderOptions.render(widget, renderOptions)
     }
 
     var parentNode = domNode.parentNode
@@ -568,7 +567,7 @@ function widgetPatch(domNode, leftVNode, widget, renderOptions) {
 
 function vNodePatch(domNode, leftVNode, vNode, renderOptions) {
     var parentNode = domNode.parentNode
-    var newNode = render(vNode, renderOptions)
+    var newNode = renderOptions.render(vNode, renderOptions)
 
     if (parentNode && newNode !== domNode) {
         parentNode.replaceChild(newNode, domNode)
@@ -616,16 +615,23 @@ function replaceRoot(oldRoot, newRoot) {
     return newRoot;
 }
 
-},{"../vnode/is-widget.js":30,"../vnode/vpatch.js":33,"./apply-properties":12,"./create-element":13,"./update-widget":17}],16:[function(require,module,exports){
+},{"../vnode/is-widget.js":30,"../vnode/vpatch.js":33,"./apply-properties":12,"./update-widget":17}],16:[function(require,module,exports){
 var document = require("global/document")
 var isArray = require("x-is-array")
 
+var render = require("./create-element")
 var domIndex = require("./dom-index")
 var patchOp = require("./patch-op")
 module.exports = patch
 
-function patch(rootNode, patches) {
-    return patchRecursive(rootNode, patches)
+function patch(rootNode, patches, renderOptions) {
+    renderOptions = renderOptions || {}
+    renderOptions.patch = renderOptions.patch && renderOptions.patch !== patch
+        ? renderOptions.patch
+        : patchRecursive
+    renderOptions.render = renderOptions.render || render
+
+    return renderOptions.patch(rootNode, patches, renderOptions)
 }
 
 function patchRecursive(rootNode, patches, renderOptions) {
@@ -638,11 +644,8 @@ function patchRecursive(rootNode, patches, renderOptions) {
     var index = domIndex(rootNode, patches.a, indices)
     var ownerDocument = rootNode.ownerDocument
 
-    if (!renderOptions) {
-        renderOptions = { patch: patchRecursive }
-        if (ownerDocument !== document) {
-            renderOptions.document = ownerDocument
-        }
+    if (!renderOptions.document && ownerDocument !== document) {
+        renderOptions.document = ownerDocument
     }
 
     for (var i = 0; i < indices.length; i++) {
@@ -694,7 +697,7 @@ function patchIndices(patches) {
     return indices
 }
 
-},{"./dom-index":14,"./patch-op":15,"global/document":8,"x-is-array":10}],17:[function(require,module,exports){
+},{"./create-element":13,"./dom-index":14,"./patch-op":15,"global/document":8,"x-is-array":10}],17:[function(require,module,exports){
 var isWidget = require("../vnode/is-widget.js")
 
 module.exports = updateWidget
@@ -862,6 +865,8 @@ function h(tagName, properties, children) {
 function addChild(c, childNodes, tag, props) {
     if (typeof c === 'string') {
         childNodes.push(new VText(c));
+    } else if (typeof c === 'number') {
+        childNodes.push(new VText(String(c)));
     } else if (isChild(c)) {
         childNodes.push(c);
     } else if (isArray(c)) {
@@ -938,7 +943,7 @@ function errorString(obj) {
 
 var split = require('browser-split');
 
-var classIdSplit = /([\.#]?[a-zA-Z0-9_:-]+)/;
+var classIdSplit = /([\.#]?[a-zA-Z0-9\u007F-\uFFFF_:-]+)/;
 var notClassId = /^\.|#/;
 
 module.exports = parseTag;
@@ -2035,7 +2040,7 @@ function keyIndex(children) {
 
     return {
         keys: keys,     // A hash of key name to index
-        free: free,     // An array of unkeyed item indices
+        free: free      // An array of unkeyed item indices
     }
 }
 
