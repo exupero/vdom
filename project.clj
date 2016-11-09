@@ -4,6 +4,5 @@
   :license {:name "MIT License"
             :url "http://opensource.org/licenses/MIT"}
   :dependencies [[org.clojure/clojure "1.8.0"]
-                 [org.clojure/clojurescript "1.9.89" :exclusions [org.apache.ant/ant]]
-                 [org.clojure/core.async "0.2.385"]]
+                 [org.clojure/clojurescript "1.9.89" :exclusions [org.apache.ant/ant]]]
   :source-paths ["src"])
