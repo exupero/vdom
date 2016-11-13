@@ -12,7 +12,11 @@
     (remove nil?)))
 
 (defn html-node [tag attrs children]
-  (js/VDOM.VHtml. (name tag) (clj->js attrs) (clj->js children)))
+  (js/VDOM.VHtml.
+    (name tag)
+    (clj->js (dissoc attrs :key))
+    (clj->js children)
+    (:key attrs)))
 
 (defn svg-node [tag attrs children]
   (js/VDOM.VSvg. (name tag) (clj->js attrs) (clj->js children)))
