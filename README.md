@@ -27,16 +27,7 @@ For example,
   (render [:div {} "Hello, world"]))
 ```
 
-To update the HTML, call the render function again with new data.
-
-Rendering works well with core.async channels and goroutines. For instance, assuming you have a channel called `ui` on which UI data trees are passed, the following updates the HTML every time there's a new UI state.
-
-```clojure
-(let [render (vdom.core/renderer js/document.body)]
-  (go-loop []
-    (render (<! ui))
-    (recur))
-```
+To update the HTML, call the render function again with a different argument.
 
 ### UI data trees
 
@@ -81,28 +72,6 @@ which produces the HTML
 ```
 
 Vdom handles SVG nodes transparently, so long as an `svg` node is part of the tree. Descendant nodes of `svg` are constructed with the `virtual-hyperscript/svg` function rather than `VNode`. Descendants of a `foreignObject` tag are constructed with `VNode`.
-
-### vdom.elm
-
-The `vdom.elm` namespace provides some simple FRP-style functions, namely `foldp` and `render!`. They use core.async channels and goroutines instead of true FRP signals.
-
-`foldp` takes a function, an initial value, and a channel of actions, and returns a new channel of values. The values are produced by applying the given function to the current value and the latest value from the channel of actions.
-
-`render!` takes a channel of UI trees and a root element, and updates the DOM whenever a new UI tree comes in.
-
-These two functions, along with `core.async/map`, provide the basis for a simple, [Elm-style architecture](https://github.com/evancz/elm-architecture-tutorial#the-elm-architecture).
-
-```clojure
-(defn step [x action]
-  (condp = action
-    :inc (inc x)
-    :dec (dec x)
-    x))
-
-(let [actions (core.async/chan)
-      models (vdom.elm/foldp step 0 actions)]
-  (vdom.elm/render! (core.async/map (fn [x] [:div {} x]) [models]) js/document.body))
-```
 
 ## Hooks
 

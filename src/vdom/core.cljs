@@ -1,7 +1,5 @@
 (ns vdom.core
-  (:require-macros [cljs.core.async.macros :refer [go go-loop]])
-  (:require [cljs.core.async :refer [chan <! put!]]
-            vdom.js))
+  (:require vdom.js))
 
 (def diff js/VDOM.diff)
 (def patch js/VDOM.patch)
