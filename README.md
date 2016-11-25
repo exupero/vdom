@@ -5,7 +5,7 @@ A Clojure library for constructing virtual DOMs using [virtual-dom](https://gith
 ## Installation
 
 ```clojure
-[vdom "0.1.1-SNAPSHOT"]
+[vdom "0.2.1-SNAPSHOT"]
 ```
 
 Then require `vdom.core` or, if you'd like a more reactive experience, `vdom.elm`.
