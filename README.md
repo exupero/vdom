@@ -8,7 +8,7 @@ A Clojure library for constructing virtual DOMs using [virtual-dom](https://gith
 [vdom "0.2.1-SNAPSHOT"]
 ```
 
-Then require `vdom.core` or, if you'd like a more reactive experience, `vdom.elm`.
+Then require `vdom.core`.
 
 ## Building
 
