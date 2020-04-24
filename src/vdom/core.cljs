@@ -26,12 +26,17 @@
 
 (declare svg-tree)
 
+(defn virtual-node? [arg]
+  ;; use javascript notion of true/false,
+  ;; otherwise, this will return true for "" and cause issues
+  (js/Boolean (js/VDOM.isVirtualNode arg)))
+
 (defn html-tree [arg]
   (cond
     (nil? arg)
     (text-node "")
 
-    (js/VDOM.isVirtualNode arg)
+    (virtual-node? arg)
     arg
 
     (seq? arg)
@@ -55,7 +60,7 @@
     (nil? arg)
     (text-node "")
 
-    (js/VDOM.isVirtualNode arg)
+    (virtual-node? arg)
     arg
 
     (string? arg)
