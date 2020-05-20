@@ -26,12 +26,21 @@
 
 (declare svg-tree)
 
+(defn virtual-node? [arg]
+  ;; Use javascript notion of true/false.
+  ;; `js/VDOM.isVirtualNode` doesn't just return true/false, but will
+  ;; return any js falsey argument passed in unchanged (eg. "").
+  ;; This causes `js/VDOM.isVirtualNode` to be false in js
+  ;; and true in cljs for any value that is falsey in js and
+  ;; true in cljs (eg. "", 0, -0, NaN, 0n).
+  (js/Boolean (js/VDOM.isVirtualNode arg)))
+
 (defn html-tree [arg]
   (cond
     (nil? arg)
     (text-node "")
 
-    (js/VDOM.isVirtualNode arg)
+    (virtual-node? arg)
     arg
 
     (seq? arg)
@@ -55,7 +64,7 @@
     (nil? arg)
     (text-node "")
 
-    (js/VDOM.isVirtualNode arg)
+    (virtual-node? arg)
     arg
 
     (string? arg)
