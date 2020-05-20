@@ -27,8 +27,12 @@
 (declare svg-tree)
 
 (defn virtual-node? [arg]
-  ;; use javascript notion of true/false,
-  ;; otherwise, this will return true for "" and cause issues
+  ;; Use javascript notion of true/false.
+  ;; `js/VDOM.isVirtualNode` doesn't just return true/false, but will
+  ;; return any js falsey argument passed in unchanged (eg. "").
+  ;; This causes `js/VDOM.isVirtualNode` to be false in js
+  ;; and true in cljs for any value that is falsey in js and
+  ;; true in cljs (eg. "", 0, -0, NaN, 0n).
   (js/Boolean (js/VDOM.isVirtualNode arg)))
 
 (defn html-tree [arg]
